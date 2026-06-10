@@ -311,14 +311,108 @@
 
     /* ── Galeria ── */
     .gal {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 240px; gap: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 240px 240px;
+      gap: 12px;
     }
-    .gal image-slot { width: 100%; height: 100%; border-radius: 12px; overflow: hidden; }
-    .g-tall { grid-row: span 2; }
-    .g-wide { grid-column: span 2; }
-    @media (max-width: 720px) { .gal { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 440px) { .gal { grid-template-columns: 1fr; } }
+    .gal-item {
+      position: relative; overflow: hidden;
+      border-radius: 12px; cursor: pointer;
+    }
+    .gal-item:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
+    .gal-item:nth-child(2) { grid-column: 2; grid-row: 1; }
+    .gal-item:nth-child(3) { grid-column: 3; grid-row: 1 / 3; }
+    .gal-item:nth-child(4) { grid-column: 2; grid-row: 2; }
+    .gal-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform .55s ease;
+    }
+    .gal-item:hover img { transform: scale(1.07); }
+    .gal-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(47,55,42,.65) 0%, transparent 60%);
+      opacity: 0; transition: opacity .3s;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .gal-item:hover .gal-overlay { opacity: 1; }
+    .gal-overlay span {
+      color: #fefdfb; font-size: 12px; letter-spacing: .14em;
+      text-transform: uppercase; font-weight: 500;
+      transform: translateY(6px); transition: transform .3s;
+    }
+    .gal-item:hover .gal-overlay span { transform: translateY(0); }
+
+    /* ── Lightbox ── */
+    .lb {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .lb.open { opacity: 1; pointer-events: auto; }
+    .lb-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(23,28,19,.92);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .lb-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+    }
+    .lb-content img {
+      max-width: 88vw; max-height: 80vh;
+      object-fit: contain; border-radius: 8px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.55);
+      transform: scale(.94); transition: transform .35s ease;
+      display: block;
+    }
+    .lb.open .lb-content img { transform: scale(1); }
+    .lb-caption {
+      color: rgba(238,240,232,.65); font-size: 11.5px;
+      letter-spacing: .18em; text-transform: uppercase;
+    }
+    .lb-close, .lb-prev, .lb-next {
+      position: absolute; z-index: 2; border: 1px solid rgba(254,253,251,.18);
+      background: rgba(254,253,251,.08); color: #fefdfb; cursor: pointer;
+      transition: background .2s; backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-close:hover, .lb-prev:hover, .lb-next:hover { background: rgba(254,253,251,.22); }
+    .lb-close {
+      top: 24px; right: 28px; width: 44px; height: 44px;
+      border-radius: 50%; font-size: 22px;
+    }
+    .lb-prev, .lb-next {
+      top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%; font-size: 28px;
+    }
+    .lb-prev { left: 24px; }
+    .lb-next { right: 24px; }
+
+    @media (max-width: 720px) {
+      .gal {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 200px 200px 200px;
+      }
+      .gal-item:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
+      .gal-item:nth-child(2) { grid-column: 2; grid-row: 1; }
+      .gal-item:nth-child(3) { grid-column: 2; grid-row: 2; }
+      .gal-item:nth-child(4) { grid-column: 1 / 3; grid-row: 3; }
+      .lb-prev { left: 8px; }
+      .lb-next { right: 8px; }
+    }
+    @media (max-width: 440px) {
+      .gal {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .gal-item { height: 260px; }
+      .gal-item:nth-child(1),
+      .gal-item:nth-child(2),
+      .gal-item:nth-child(3),
+      .gal-item:nth-child(4) { grid-column: 1; grid-row: auto; }
+    }
 
     /* ── Opinie ── */
     .rev-grid {
@@ -739,13 +833,24 @@
       <div class="sec-top reveal">
         <span class="eyebrow">Galeria · efekty</span>
         <h2 class="h2">Nasze realizacje</h2>
-        <p class="lead">Efekty naszej pracy — stylizacje paznokci, body piercing i wnętrze studia.</p>
       </div>
       <div class="gal reveal">
-        <image-slot id="a-g1" class="g-tall" radius="12" src="foto/hybryda.png" placeholder="Stylizacja paznokci"></image-slot>
-        <image-slot id="a-g2" radius="12" src="foto/paznokcie-biale.png" placeholder="Stylizacja paznokci"></image-slot>
-        <image-slot id="a-g4" radius="12" src="foto/piercing.png" placeholder="Piercing"></image-slot>
-        <image-slot id="a-g5" class="g-wide" radius="12" src="foto/studio-wnetrze.png" placeholder="Wnętrze salonu"></image-slot>
+        <div class="gal-item">
+          <img src="foto/hybryda.png" alt="Stylizacja hybrydowa paznokci" loading="lazy">
+          <div class="gal-overlay"><span>Stylizacja hybrydowa</span></div>
+        </div>
+        <div class="gal-item">
+          <img src="foto/paznokcie-biale.png" alt="Paznokcie żelowe" loading="lazy">
+          <div class="gal-overlay"><span>Paznokcie żelowe</span></div>
+        </div>
+        <div class="gal-item">
+          <img src="foto/piercing.png" alt="Body Piercing" loading="lazy">
+          <div class="gal-overlay"><span>Body Piercing</span></div>
+        </div>
+        <div class="gal-item">
+          <img src="foto/studio-wnetrze.png" alt="Wnętrze Eluris Studio" loading="lazy">
+          <div class="gal-overlay"><span>Wnętrze studia</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -853,6 +958,18 @@
     </div>
   </footer>
 
+  <!-- Lightbox -->
+  <div id="lightbox" class="lb" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia">
+    <div class="lb-backdrop"></div>
+    <button class="lb-close" aria-label="Zamknij">&#215;</button>
+    <button class="lb-prev" aria-label="Poprzednie">&#8249;</button>
+    <button class="lb-next" aria-label="Następne">&#8250;</button>
+    <div class="lb-content">
+      <img id="lb-img" src="" alt="">
+      <div class="lb-caption" id="lb-caption"></div>
+    </div>
+  </div>
+
   <script src="image-slot.js"></script>
   <script>
     function toggleMenu() {
@@ -882,6 +999,62 @@
     reveal();
     setTimeout(reveal, 120);
     setTimeout(reveal, 500);
+
+    // ── Lightbox ──────────────────────────────────────────────
+    (function () {
+      const lb      = document.getElementById('lightbox');
+      const lbImg   = document.getElementById('lb-img');
+      const lbCap   = document.getElementById('lb-caption');
+      const items   = [];
+      let current   = 0;
+
+      document.querySelectorAll('.gal-item').forEach(function (el, i) {
+        const img = el.querySelector('img');
+        const cap = el.querySelector('.gal-overlay span').textContent;
+        items.push({ src: img.src, alt: img.alt, cap: cap });
+        el.addEventListener('click', function () { openLb(i); });
+      });
+
+      function openLb(idx) {
+        current = idx;
+        lbImg.src = items[idx].src;
+        lbImg.alt = items[idx].alt;
+        lbCap.textContent = items[idx].cap;
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeLb() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+        setTimeout(function () { lbImg.src = ''; }, 300);
+      }
+      function prevLb() { openLb((current - 1 + items.length) % items.length); }
+      function nextLb() { openLb((current + 1) % items.length); }
+
+      document.querySelector('.lb-close').addEventListener('click', closeLb);
+      document.querySelector('.lb-backdrop').addEventListener('click', closeLb);
+      document.querySelector('.lb-prev').addEventListener('click', prevLb);
+      document.querySelector('.lb-next').addEventListener('click', nextLb);
+
+      document.addEventListener('keydown', function (e) {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape')     closeLb();
+        if (e.key === 'ArrowLeft')  prevLb();
+        if (e.key === 'ArrowRight') nextLb();
+      });
+
+      // swipe na mobile
+      var touchX = null;
+      lb.addEventListener('touchstart', function (e) {
+        touchX = e.touches[0].clientX;
+      }, { passive: true });
+      lb.addEventListener('touchend', function (e) {
+        if (touchX === null) return;
+        var dx = e.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 50) dx < 0 ? nextLb() : prevLb();
+        touchX = null;
+      }, { passive: true });
+    })();
   </script>
 </body>
 </html>
