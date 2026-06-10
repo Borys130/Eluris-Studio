@@ -160,23 +160,8 @@
     .hero h1 em { font-style: italic; color: var(--sage-d); }
     .hero p.lead { margin: 24px 0 32px; max-width: 420px; }
     .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
-    .hero-stats {
-      margin-top: 40px; display: flex; gap: 0;
-      border: 1px solid var(--line); border-radius: 14px;
-      overflow: hidden; max-width: 420px;
-    }
-    .hero-stat {
-      flex: 1; padding: 18px 20px; text-align: center;
-      border-right: 1px solid var(--line);
-    }
-    .hero-stat:last-child { border-right: none; }
-    .hero-stat b {
-      display: block; font-family: 'Cormorant Garamond', serif;
-      font-size: 30px; color: var(--forest); font-weight: 500; line-height: 1;
-    }
-    .hero-stat span { font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
     .hero-img { position: relative; }
-    .hero-img image-slot { width: 100%; height: 560px; border-radius: 20px; overflow: hidden; }
+    .hero-img img { width: 100%; height: 560px; border-radius: 20px; object-fit: cover; display: block; }
     .hero-badge {
       position: absolute; left: -20px; bottom: 36px;
       background: var(--paper); border: 1px solid var(--line);
@@ -189,24 +174,10 @@
       content: ''; display: block; width: 8px; height: 8px;
       border-radius: 50%; background: var(--sage); flex-shrink: 0;
     }
-    .hero-rating {
-      position: absolute; right: -16px; top: 32px;
-      background: var(--forest); border-radius: 14px;
-      padding: 14px 20px; text-align: center; color: var(--cream);
-      box-shadow: 0 16px 40px -12px rgba(47,55,42,.5);
-    }
-    .hero-rating .r-score {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 36px; font-weight: 500; line-height: 1; color: var(--sand);
-    }
-    .hero-rating .r-stars { color: var(--sand); font-size: 13px; letter-spacing: 2px; margin: 2px 0; }
-    .hero-rating .r-count { font-size: 10.5px; color: rgba(238,240,232,.6); letter-spacing: .1em; text-transform: uppercase; }
-
     @media (max-width: 860px) {
       .hero-grid { grid-template-columns: 1fr; gap: 32px; }
-      .hero-img image-slot { height: 400px; }
+      .hero-img img { height: 400px; }
       .hero-badge { left: 14px; }
-      .hero-rating { right: 14px; top: 16px; }
     }
     @media (max-width: 520px) {
       .wrap { padding: 0 20px; }
@@ -251,7 +222,7 @@
       display: grid; grid-template-columns: 1fr 1.1fr;
       gap: 64px; align-items: center;
     }
-    .about image-slot { width: 100%; height: 520px; border-radius: 20px; overflow: hidden; }
+    .about img { width: 100%; height: 520px; border-radius: 20px; object-fit: cover; display: block; }
     .about .h2 { margin: 16px 0 22px; }
     .about p {
       font-size: 16px; color: var(--muted); font-weight: 300;
@@ -277,7 +248,7 @@
     }
     @media (max-width: 860px) {
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
-      .about image-slot { height: 380px; }
+      .about img { height: 380px; }
     }
 
     /* ── Cennik ── */
@@ -611,7 +582,7 @@
         </div>
       </div>
       <div class="hero-img reveal">
-        <image-slot id="a-hero" shape="rounded" radius="20" src="foto/studio-wnetrze.png" placeholder="Zdjęcie wnętrza salonu / zabiegu"></image-slot>
+        <img src="foto/studio-wnetrze.png" alt="Wnętrze Eluris Studio">
         <span class="hero-badge">Kosmetologia · Piercing · Paznokcie</span>
       </div>
     </div>
@@ -674,7 +645,7 @@
   <section class="pad">
     <div class="wrap about-grid">
       <div class="about reveal">
-        <image-slot id="a-about" shape="rounded" radius="20" src="foto/wejscie.png" placeholder="Zdjęcie zespołu / detalu wnętrza"></image-slot>
+        <img src="foto/wejscie.png" alt="Wejście do Eluris Studio">
       </div>
       <div class="about reveal">
         <span class="eyebrow">O studiu</span>
@@ -1000,7 +971,6 @@
     </div>
   </div>
 
-  <script src="image-slot.js"></script>
   <script>
     function toggleMenu() {
       const burger = document.getElementById('navBurger');
