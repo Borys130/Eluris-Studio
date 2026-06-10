@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://eluris-studio.workers.dev/sitemap.xml
+Sitemap: https://eluris-studio.borysekspiaczka.workers.dev/sitemap.xml
