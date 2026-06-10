@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eluris Studio — Gabinet Kosmetyczny Rawicz</title>
-  <meta name="description" content="Eluris Studio — kosmetologia, body piercing i stylizacja paznokci w Rawiczu. Ul. 3 Maja 36. Ocena 4,9/5 na podstawie 51 opinii.">
+  <meta name="description" content="Eluris Studio — kosmetologia, body piercing i stylizacja paznokci w Rawiczu. Ul. 3 Maja 36. Gabinet kosmetyczny Rawicz.">
   <meta property="og:title" content="Eluris Studio — Gabinet Kosmetyczny Rawicz">
   <meta property="og:description" content="Kosmetologia, body piercing i stylizacja paznokci. Ul. 3 Maja 36, Rawicz.">
   <meta property="og:type" content="website">
@@ -532,6 +532,42 @@
       height: 1px; background: linear-gradient(90deg, transparent, var(--line), transparent);
       margin: 0;
     }
+
+    /* ── Back to top ── */
+    .btt {
+      position: fixed; bottom: 28px; right: 28px; z-index: 150;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--forest); color: var(--cream);
+      border: 1.5px solid rgba(255,255,255,.12);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 20px; line-height: 1;
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: opacity .3s, transform .3s, background .2s;
+      box-shadow: 0 4px 20px rgba(47,55,42,.35);
+    }
+    .btt.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .btt:hover { background: var(--sage-d); }
+
+    /* ── Cookie banner ── */
+    .cookie-banner {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: var(--forest); color: var(--cream);
+      padding: 20px 40px; display: flex;
+      align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+      transform: translateY(100%); transition: transform .4s ease;
+      box-shadow: 0 -4px 32px rgba(0,0,0,.2);
+    }
+    .cookie-banner.visible { transform: translateY(0); }
+    .cookie-banner p {
+      font-size: 13.5px; color: rgba(238,240,232,.75);
+      font-weight: 300; line-height: 1.55; flex: 1; min-width: 260px; margin: 0;
+    }
+    .cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+    @media (max-width: 560px) {
+      .cookie-banner { padding: 18px 20px; }
+      .btt { bottom: 20px; right: 20px; }
+    }
   </style>
 </head>
 <body>
@@ -573,29 +609,10 @@
           <a href="tel:+48539938866" class="btn btn-solid">Zadzwoń i umów</a>
           <a href="#uslugi" class="btn btn-ghost">Zobacz usługi</a>
         </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <b>4,9</b>
-            <span>Ocena</span>
-          </div>
-          <div class="hero-stat">
-            <b>51</b>
-            <span>Opinii</span>
-          </div>
-          <div class="hero-stat">
-            <b>3</b>
-            <span>Specjalizacje</span>
-          </div>
-        </div>
       </div>
       <div class="hero-img reveal">
         <image-slot id="a-hero" shape="rounded" radius="20" src="foto/studio-wnetrze.png" placeholder="Zdjęcie wnętrza salonu / zabiegu"></image-slot>
         <span class="hero-badge">Kosmetologia · Piercing · Paznokcie</span>
-        <div class="hero-rating">
-          <div class="r-score">4,9</div>
-          <div class="r-stars">★★★★★</div>
-          <div class="r-count">51 opinii</div>
-        </div>
       </div>
     </div>
   </section>
@@ -862,7 +879,7 @@
   <section class="pad band" id="opinie">
     <div class="wrap">
       <div class="sec-top reveal">
-        <span class="eyebrow">Opinie Google · 4,9 / 5</span>
+        <span class="eyebrow">Opinie Google</span>
         <h2 class="h2">Co mówią klientki</h2>
       </div>
       <div class="rev-grid reveal">
@@ -958,6 +975,18 @@
       </div>
     </div>
   </footer>
+
+  <!-- Back to top -->
+  <button class="btt" id="btt" aria-label="Wróć na górę">&#8679;</button>
+
+  <!-- Cookie banner -->
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Zgoda na cookies">
+    <p>Ta strona używa plików cookie (m.in. Google Maps). Korzystając z niej, wyrażasz zgodę na ich użycie zgodnie z&nbsp;RODO.</p>
+    <div class="cookie-actions">
+      <button id="cookie-reject" class="btn btn-outline-light" style="font-size:11px;padding:10px 18px">Odrzuć</button>
+      <button id="cookie-accept" class="btn btn-solid" style="font-size:11px;padding:10px 18px">Akceptuj</button>
+    </div>
+  </div>
 
   <!-- Lightbox -->
   <div id="lightbox" class="lb" role="dialog" aria-modal="true" aria-label="Podgląd zdjęcia">
@@ -1055,6 +1084,30 @@
         if (Math.abs(dx) > 50) dx < 0 ? nextLb() : prevLb();
         touchX = null;
       }, { passive: true });
+    })();
+
+    // ── Back to top ───────────────────────────────────────────
+    (function () {
+      var btn = document.getElementById('btt');
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('visible', window.scrollY > 320);
+      }, { passive: true });
+      btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+
+    // ── Cookie consent ────────────────────────────────────────
+    (function () {
+      if (localStorage.getItem('cookie-consent')) return;
+      var banner = document.getElementById('cookie-banner');
+      setTimeout(function () { banner.classList.add('visible'); }, 900);
+      function dismiss(val) {
+        localStorage.setItem('cookie-consent', val);
+        banner.classList.remove('visible');
+      }
+      document.getElementById('cookie-accept').addEventListener('click', function () { dismiss('accepted'); });
+      document.getElementById('cookie-reject').addEventListener('click', function () { dismiss('rejected'); });
     })();
   </script>
 </body>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eluris-studio.borysekspiaczka.workers.dev/sitemap.xml
