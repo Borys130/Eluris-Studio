@@ -1229,14 +1229,36 @@
 
         if (!ok) return;
 
-        // Symulacja wysyłki (brak backendu — do nauki walidacji)
         btn.disabled = true;
         btn.textContent = 'Wysyłanie…';
 
-        setTimeout(function () {
-          form.style.display = 'none';
-          success.classList.add('show');
-        }, 1200);
+        fetch('/api/kontakt', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name:    document.getElementById('cf-name').value.trim(),
+            email:   document.getElementById('cf-email').value.trim(),
+            phone:   document.getElementById('cf-phone').value.trim(),
+            service: document.getElementById('cf-service').value,
+            message: document.getElementById('cf-message').value.trim(),
+          }),
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data.ok) {
+            form.style.display = 'none';
+            success.classList.add('show');
+          } else {
+            btn.disabled = false;
+            btn.textContent = 'Wyślij wiadomość';
+            alert('Wystąpił błąd. Spróbuj ponownie lub zadzwoń do nas.');
+          }
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Wyślij wiadomość';
+          alert('Brak połączenia. Spróbuj ponownie.');
+        });
       });
 
       // Usuń błąd przy korekcie
