@@ -44,7 +44,7 @@ async function handleKontakt(request, env) {
     },
     body: JSON.stringify({
       from: 'Eluris Studio <onboarding@resend.dev>',
-      to: ['szymon.ptaszysko@gmail.com'],
+      to: ['borrys.spiaczka@gmail.com'],
       reply_to: email,
       subject: `Nowa wiadomość od ${name}`,
       html,
@@ -54,8 +54,7 @@ async function handleKontakt(request, env) {
   if (!res.ok) {
     const err = await res.text();
     console.error('Resend error:', res.status, err);
-    // Zwracamy szczegóły błędu tymczasowo — do usunięcia po debugowaniu
-    return json({ ok: false, debug: `Resend ${res.status}: ${err}` }, 500);
+    return json({ ok: false }, 500);
   }
 
   return json({ ok: true });
