@@ -54,7 +54,8 @@ async function handleKontakt(request, env) {
   if (!res.ok) {
     const err = await res.text();
     console.error('Resend error:', res.status, err);
-    return json({ ok: false }, 500);
+    // Zwracamy szczegóły błędu tymczasowo — do usunięcia po debugowaniu
+    return json({ ok: false, debug: `Resend ${res.status}: ${err}` }, 500);
   }
 
   return json({ ok: true });
