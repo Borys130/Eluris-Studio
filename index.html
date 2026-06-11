@@ -413,6 +413,72 @@
     @media (max-width: 860px) { .rev-grid { grid-template-columns: 1fr; } }
 
     /* ── Kontakt ── */
+    /* ── Formularz kontaktowy ── */
+    .form-section { background: var(--cream); }
+    .form-wrap {
+      max-width: 640px; margin: 0 auto; text-align: center;
+    }
+    .form-wrap .eyebrow { margin-bottom: 12px; }
+    .form-wrap .h2 { margin-bottom: 10px; }
+    .form-wrap .lead { margin-bottom: 40px; }
+    .cf {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; text-align: left;
+    }
+    .cf-full { grid-column: 1 / -1; }
+    .cf label {
+      display: block; font-size: 11px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+    }
+    .cf input, .cf textarea, .cf select {
+      width: 100%; padding: 14px 16px;
+      border: 1px solid var(--line); border-radius: 10px;
+      background: var(--paper); color: var(--ink);
+      font-family: inherit; font-size: 15px; font-weight: 300;
+      outline: none; transition: border-color .2s, box-shadow .2s;
+      box-sizing: border-box;
+    }
+    .cf input:focus, .cf textarea:focus, .cf select:focus {
+      border-color: var(--sage); box-shadow: 0 0 0 3px rgba(106,130,100,.15);
+    }
+    .cf input.error, .cf textarea.error {
+      border-color: #c0392b; box-shadow: 0 0 0 3px rgba(192,57,43,.1);
+    }
+    .cf textarea { resize: vertical; min-height: 130px; }
+    .cf-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .cf-error { font-size: 12px; color: #c0392b; margin-top: 4px; display: none; }
+    .cf-error.show { display: block; }
+    .cf-submit {
+      grid-column: 1 / -1; display: flex;
+      justify-content: center; margin-top: 8px;
+    }
+    .cf-submit button {
+      padding: 16px 44px; font-size: 13px;
+      letter-spacing: .15em; text-transform: uppercase;
+    }
+    .cf-submit button:disabled { opacity: .6; cursor: not-allowed; }
+    /* Stan sukcesu */
+    .cf-success {
+      display: none; text-align: center; padding: 48px 32px;
+      border: 1px solid var(--line); border-radius: 16px;
+      background: var(--paper);
+    }
+    .cf-success.show { display: block; }
+    .cf-success-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--sage); display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 20px; font-size: 24px;
+    }
+    .cf-success h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 500; margin-bottom: 8px;
+    }
+    .cf-success p { color: var(--muted); font-size: 15px; }
+    @media (max-width: 580px) {
+      .cf { grid-template-columns: 1fr; }
+      .cf-full, .cf-submit { grid-column: 1; }
+    }
+
     .contact { background: var(--forest); color: var(--cream); }
     .contact .h2 { color: var(--cream); }
     .contact .eyebrow { color: var(--sand); }
@@ -560,6 +626,7 @@
         <li><a href="#cennik" onclick="closeMenu()">Cennik</a></li>
         <li><a href="#galeria" onclick="closeMenu()">Galeria</a></li>
         <li><a href="#opinie" onclick="closeMenu()">Opinie</a></li>
+        <li><a href="#formularz" onclick="closeMenu()">Formularz</a></li>
         <li><a href="#kontakt" onclick="closeMenu()">Kontakt</a></li>
       </ul>
       <a href="tel:+48539938866" class="nav-cta">Zadzwoń</a>
@@ -882,6 +949,75 @@
     </div>
   </section>
 
+  <!-- FORMULARZ KONTAKTOWY -->
+  <section class="pad form-section" id="formularz">
+    <div class="wrap form-wrap reveal">
+      <span class="eyebrow">Napisz do nas</span>
+      <h2 class="h2">Masz pytanie?<br>Chętnie odpiszemy</h2>
+      <p class="lead" style="color:var(--muted);max-width:440px;margin-left:auto;margin-right:auto">
+        Wypełnij formularz, a odezwiemy się w ciągu 24&nbsp;godzin.
+      </p>
+
+      <!-- Formularz -->
+      <form class="cf" id="contact-form" novalidate>
+
+        <div>
+          <label for="cf-name">Imię i nazwisko *</label>
+          <input type="text" id="cf-name" name="name" placeholder="np. Anna Kowalska"
+                 autocomplete="name" required>
+          <span class="cf-error" id="err-name">Podaj imię i nazwisko.</span>
+        </div>
+
+        <div>
+          <label for="cf-phone">Telefon</label>
+          <input type="tel" id="cf-phone" name="phone" placeholder="+48 000 000 000"
+                 autocomplete="tel">
+          <span class="cf-hint">Opcjonalnie — do szybkiego kontaktu</span>
+        </div>
+
+        <div class="cf-full">
+          <label for="cf-email">Adres e-mail *</label>
+          <input type="email" id="cf-email" name="email" placeholder="np. anna@example.com"
+                 autocomplete="email" required>
+          <span class="cf-error" id="err-email">Podaj poprawny adres e-mail.</span>
+        </div>
+
+        <div class="cf-full">
+          <label for="cf-service">Interesuje mnie</label>
+          <select id="cf-service" name="service">
+            <option value="">— Wybierz usługę (opcjonalnie) —</option>
+            <option>Manicure hybrydowy</option>
+            <option>Paznokcie żelowe</option>
+            <option>Pedicure</option>
+            <option>Body piercing</option>
+            <option>Inna usługa</option>
+          </select>
+        </div>
+
+        <div class="cf-full">
+          <label for="cf-message">Wiadomość *</label>
+          <textarea id="cf-message" name="message" rows="5"
+                    placeholder="Napisz, w czym możemy pomóc…" required></textarea>
+          <span class="cf-error" id="err-message">Wpisz wiadomość.</span>
+        </div>
+
+        <div class="cf-submit">
+          <button type="submit" class="btn btn-solid" id="cf-btn">
+            Wyślij wiadomość
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Stan sukcesu (pojawia się po wysłaniu) -->
+      <div class="cf-success" id="cf-success" role="alert">
+        <div class="cf-success-icon">✓</div>
+        <h3>Wiadomość wysłana!</h3>
+        <p>Dziękujemy — odezwiemy się wkrótce.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- KONTAKT -->
   <section class="pad contact" id="kontakt">
     <div class="wrap ct-grid">
@@ -1064,6 +1200,53 @@
       }, { passive: true });
       btn.addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+
+    // ── Formularz kontaktowy ──────────────────────────────────
+    (function () {
+      var form    = document.getElementById('contact-form');
+      var success = document.getElementById('cf-success');
+      var btn     = document.getElementById('cf-btn');
+
+      function val(id, errId, check) {
+        var el  = document.getElementById(id);
+        var err = document.getElementById(errId);
+        var ok  = check(el.value.trim());
+        el.classList.toggle('error', !ok);
+        err.classList.toggle('show', !ok);
+        return ok;
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var ok = [
+          val('cf-name',    'err-name',    function(v){ return v.length >= 2; }),
+          val('cf-email',   'err-email',   function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }),
+          val('cf-message', 'err-message', function(v){ return v.length >= 5; })
+        ].every(Boolean);
+
+        if (!ok) return;
+
+        // Symulacja wysyłki (brak backendu — do nauki walidacji)
+        btn.disabled = true;
+        btn.textContent = 'Wysyłanie…';
+
+        setTimeout(function () {
+          form.style.display = 'none';
+          success.classList.add('show');
+        }, 1200);
+      });
+
+      // Usuń błąd przy korekcie
+      ['cf-name', 'cf-email', 'cf-message'].forEach(function (id) {
+        document.getElementById(id).addEventListener('input', function () {
+          this.classList.remove('error');
+          var errId = 'err-' + id.replace('cf-', '');
+          var errEl = document.getElementById(errId);
+          if (errEl) errEl.classList.remove('show');
+        });
       });
     })();
 
