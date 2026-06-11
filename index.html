@@ -1251,7 +1251,7 @@
           } else {
             btn.disabled = false;
             btn.textContent = 'Wyślij wiadomość';
-            alert('Wystąpił błąd. Spróbuj ponownie lub zadzwoń do nas.');
+            alert('Błąd: ' + (data.debug || 'nieznany błąd'));
           }
         })
         .catch(function () {
