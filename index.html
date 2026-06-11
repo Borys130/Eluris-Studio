@@ -137,14 +137,15 @@
       nav.nav-open {
         position: fixed; inset: 0; z-index: 100;
         background: var(--paper); backdrop-filter: none; -webkit-backdrop-filter: none;
-        display: flex; flex-direction: column; height: 100dvh;
       }
-      nav.nav-open .nav-in { flex-shrink: 0; border-bottom: 1px solid var(--line); }
-      .nav-links {
-        display: none; flex-direction: column; align-items: center;
-        justify-content: center; gap: 32px; flex: 1;
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; position: absolute;
+        top: 77px; left: 0; right: 0; bottom: 0;
+        flex-direction: column; align-items: center; justify-content: center;
+        gap: 36px; background: var(--paper);
+        border-top: 1px solid var(--line);
       }
-      .nav-links.open { display: flex; }
       .nav-links a { font-size: 18px; }
       .nav-burger { display: flex; z-index: 101; }
       .nav-cta { display: none; }
