@@ -166,6 +166,35 @@
     .hero h1 em { font-style: italic; color: var(--sage-d); }
     .hero p.lead { margin: 24px 0 32px; max-width: 420px; }
     .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* ── Ocena Google (dynamiczna) ── */
+    .hero-reviews {
+      display: none; align-items: center; gap: 12px;
+      margin-top: 30px;
+    }
+    .hero-reviews.show { display: flex; }
+    .hr-stars {
+      position: relative; display: inline-block;
+      font-size: 17px; letter-spacing: 3px; line-height: 1;
+      font-family: Arial, sans-serif;
+    }
+    .hr-stars-bg { color: var(--line); }
+    .hr-stars-fg {
+      position: absolute; left: 0; top: 0; width: 0;
+      color: #e6b32e; overflow: hidden; white-space: nowrap;
+    }
+    .hr-score {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 600; color: var(--forest); line-height: 1;
+    }
+    .hr-meta { display: flex; flex-direction: column; gap: 2px; }
+    .hr-count {
+      font-size: 12.5px; color: var(--muted);
+      border-bottom: 1px solid transparent; transition: border-color .2s, color .2s;
+    }
+    .hr-count:hover { color: var(--sage-d); border-bottom-color: var(--sage-d); }
+    .hr-google { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); }
+
     .hero-img { position: relative; }
     .hero-img img { width: 100%; height: 560px; border-radius: 20px; object-fit: cover; display: block; }
     .hero-badge {
@@ -652,6 +681,23 @@
         <div class="hero-cta">
           <a href="tel:+48539938866" class="btn btn-solid">Zadzwoń i umów</a>
           <a href="#uslugi" class="btn btn-ghost">Zobacz usługi</a>
+        </div>
+
+        <!-- Ocena Google — uzupełniana dynamicznie z Places API -->
+        <div class="hero-reviews" id="heroReviews">
+          <div class="hr-stars" aria-hidden="true">
+            <span class="hr-stars-bg">★★★★★</span>
+            <span class="hr-stars-fg" id="hrStarsFg">★★★★★</span>
+          </div>
+          <span class="hr-score" id="hrScore"></span>
+          <div class="hr-meta">
+            <a class="hr-count"
+               href="https://www.google.com/maps/place/ELURIS+STUDIO+Gabinet+Kosmetyczny/@51.611277,16.857782,17z"
+               target="_blank" rel="noopener">
+              <span id="hrCount"></span> opinii
+            </a>
+            <span class="hr-google">w Google</span>
+          </div>
         </div>
       </div>
       <div class="hero-img reveal">
@@ -1279,6 +1325,27 @@
           if (errEl) errEl.classList.remove('show');
         });
       });
+    })();
+
+    // ── Ocena Google (dynamiczna z Places API) ────────────────
+    (function () {
+      var box = document.getElementById('heroReviews');
+      if (!box) return;
+
+      fetch('/api/opinie')
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (!data.ok || data.rating == null) return;
+
+          document.getElementById('hrScore').textContent =
+            data.rating.toFixed(1).replace('.', ',');
+          document.getElementById('hrCount').textContent = data.count;
+          document.getElementById('hrStarsFg').style.width =
+            (data.rating / 5 * 100) + '%';
+
+          box.classList.add('show');
+        })
+        .catch(function () { /* brak danych — sekcja pozostaje ukryta */ });
     })();
 
     // ── Cookie consent ────────────────────────────────────────
